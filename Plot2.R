@@ -44,11 +44,11 @@ if (require("dplyr") == FALSE)
 
 
 #group the data by year, filter by fips (baltimore city) and calculate the sum of Emissions
-plotDataBalt <- group_by(data_summarySCC, year) %>%
-    filter(fips == "24510") %>%
+plotDataBalt <- filter(data_summarySCC,fips == "24510") %>%
+    group_by( year) %>%
     summarize(total = sum(Emissions))
 
-attach(plotData)
+attach(plotDataBalt)
 
 opar <- par(no.readonly=TRUE) #save original par settings
 
@@ -60,11 +60,11 @@ png("plot2.png") #note: width and height is default 480 pixels, so no need to sp
 #      wish to use a line chart (implies data continuity that does not exist) and did not think that bar plot was appropriate.
 #      Also used a dashed line for the linear fit to help illustrate the trend line
 
-plot(plotDataBalt$year, plotDataBalt$total, pch=21, col="blue",bg="red", xlab="year", ylab=expression("PM"[2.5]*" (Tons)"), main="Total Emissions Balitmore City")
+plot(year,total, pch=21, col="blue",bg="red", xlab="year", ylab=expression("PM"[2.5]*" (Tons)"), main="Total Emissions Balitmore City")
 abline(lm(total ~ year, plotDataBalt), lwd = 1, lty=3, col="blue")
 
 par(opar)
 
 dev.off() #close and save the file to disk
 
-detach(plotData)
+detach(plotDataBalt)

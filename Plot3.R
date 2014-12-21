@@ -54,8 +54,8 @@ if (require("ggplot2") == FALSE)
 #data_summarySCC$type is a string with 4 values: ("POINT","NONPOINT","ON-ROAD","NON-ROAD") with no NA values
 
 plotDataBalt <- mutate(data_summarySCC, type = as.factor(type)) %>%
-    group_by(year, type) %>%
     filter(fips == "24510") %>%
+    group_by(year, type) %>%
     mutate(totalsByYear = sum(Emissions) ) 
 
 #Plot3 creation
@@ -66,7 +66,7 @@ png("plot3.png") #note: width and height is default 480 pixels, so no need to sp
 #      wish to use a line chart (implies data continuity that does not exist) and did not think that bar plot was appropriate.
 #      Also used a dashed line for the linear fit to help illustrate the trend line
 
-qplot(year, totalsByYear, data=plotDataBalt, facets = . ~ type, geom = c("point","smooth"), method = "lm")
+qplot(year, totalsByYear, data=plotDataBalt, facets = type ~ ., geom = c("point","smooth"), method = "lm")
 
 
 dev.off() #close and save the file to disk
